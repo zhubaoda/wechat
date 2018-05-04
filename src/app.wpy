@@ -1,0 +1,84 @@
+<style lang="less">
+@import './style/index';
+</style>
+
+<script>
+import wepy from 'wepy'
+import 'wepy-async-function'
+
+export default class extends wepy.app {
+  config = {
+    pages: [
+      'pages/list',
+      'pages/my'
+    ],
+    window: {
+    	  navigationBarBackgroundColor: '#000000',
+      backgroundTextStyle: 'light',
+      navigationBarTitleText: 'WeChat',
+      navigationBarTextStyle: 'black',
+      backgroundColor: '#f9f9f9',
+      enablePullDownRefresh: false
+    },
+    tabBar: {
+    	  color: '#606060',
+    	  selectedColor: '#000000',
+    	  backgroundColor: '#fff',
+    	  borderStyle: '#ccc',
+    	  list: [
+    	    {
+    	  	  pagePath: 'pages/list',
+    	      text: '订单',
+    	      iconPath: 'icon/order.png',
+    	      selectedIconPath: 'icon/order-selected.png'
+    	    },
+    	    {
+    	    	  pagePath: 'pages/my',
+    	    	  text: '我的',
+    	    	  iconPath: 'icon/usercenter.png',
+    	    	  selectedIconPath: 'icon/usercenter-selected.png'
+    	    }	    
+    	  ]
+    }
+  }
+
+  globalData = {
+    userInfo: null
+  }
+
+  constructor () {
+    super()
+    this.use('requestfix')
+  }
+
+  onLaunch() {
+    this.testAsync()
+  }
+
+  sleep (s) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve('promise resolved')
+      }, s * 1000)
+    })
+  }
+
+  async testAsync () {
+    const data = await this.sleep(3)
+    console.log(data)
+  }
+
+  getUserInfo(cb) {
+    const that = this
+    if (this.globalData.userInfo) {
+      return this.globalData.userInfo
+    }
+    wepy.getUserInfo({
+      success (res) {
+        that.globalData.userInfo = res.userInfo
+        cb && cb(res.userInfo)
+      }
+    })
+  }
+}
+</script>

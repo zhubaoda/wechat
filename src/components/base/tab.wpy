@@ -1,0 +1,62 @@
+<style lang="less">
+ .tab{
+ 	display: flex;
+ 	flex-direction: row;
+ 	width:100%;
+ 	box-shadow: 0px 0px 3px #888888;
+ }
+ .tab_btn {
+ 	flex: 1;
+ 	color: #000;
+ 	font-size: 14px;
+ 	display: flex;
+ 	flex-direction: row;
+ 	justify-content: center;
+ 	align-items: center;
+    .tab_item {
+    	  padding: 10px 0;
+    	  border-bottom:1px solid #fff;
+    }
+    .tab_item_selected {
+    	  border-bottom:1px solid red;
+    }
+ }
+ .selected {
+ 	color: red;
+ }
+</style>
+<template>
+    <view class="tab">
+    	   <view class="tab_btn {{tabSelectedId === item.id ? 'selected' : ''}}" wx:for="{{tabData}}" wx:key="index" @tap="selectTab({{item}})">
+    	   	 <view class="tab_item {{tabSelectedId === item.id ? 'tab_item_selected' : ''}}">{{item.name}}</view>
+    	   </view>
+    </view> 
+</template>
+
+<script>
+  import wepy from 'wepy'
+  export default class Tab extends wepy.component {
+    props = {
+    	  tabData: {
+    	  	type: Array
+    	  },
+    	  tabSelectedId: {
+    	  	type: String
+    	  }
+    }
+
+    methods = {
+    	  selectTab (item) {
+    	  	this.$emit('selectTab', item.id);
+    	  }
+    }
+
+    events = {
+     
+    }
+
+    onLoad() {
+      
+    }
+  }
+</script>

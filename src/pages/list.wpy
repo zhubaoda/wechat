@@ -1,0 +1,83 @@
+<style lang="less">
+ .list {
+   position:relative;
+   .tab{
+   	  position: fixed;
+   	    left: 0;
+        right: 0;
+        top: 1rpx;
+        z-index: 1
+   }
+   .list_scroll{
+   	height: 100vh;
+   	padding: 50px 0 0px 0;
+   	box-sizing: border-box;
+   	.list_item{
+   	  border: 1px solid #888;
+   	  padding:10px;
+   	  font-size: 13px;
+   	  margin:10px 5px;
+   	  border-radius: 4px;
+   	}
+   }
+ }
+</style>
+<template>
+  <view class="list container">
+    <tab class="tab" :tabData.sync="tabData" :tabSelectedId.sync="tabSelectedId"></tab>
+    <scroll-view scroll-y class="list_scroll">
+       <view wx:for="{{list}}" class="list_item" wx:key="{{index}}">
+       	 <view>我的名字：{{item.name}}</view>
+       	 <view>我的id：{{item.order}}</view>
+       </view>
+    </scroll-view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import httpService from '@/common/httpService'
+  import Tab from '@/components/base/tab'
+  import config from './data/config'
+  export default class List extends wepy.page {
+    config = {
+      navigationBarTitleText: '订单',
+      enablePullDownRefresh: true
+    }
+    components = {
+      tab: Tab
+    }
+
+    data = {
+      tabData: config.tab.list,
+      tabSelectedId: 'all',
+      list: config.list
+    }
+//  async onPullDownRefresh () {
+//  	  console.log(1)
+//  	  wepy.stopPullDownRefresh()
+//  }
+        // 上拉更新
+    async onPullDownRefresh () {
+//    this.goods.page = 1
+//    this.goods.finish = false
+//    await this.getFirstList(this.categoryId);
+      console.log(1)
+      wepy.stopPullDownRefresh()
+      wepy.showToast({'title': '刷新成功'})
+    }
+    events = {
+    	  async selectTab (id) {
+    	  	this.tabSelectedId = id;
+    	  }
+    }
+
+    methods = {
+    	  
+    }
+
+    onLoad() {
+      console.log(this.list)
+    }
+  }
+</script>
